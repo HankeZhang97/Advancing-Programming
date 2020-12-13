@@ -2,21 +2,11 @@ import os
 
 from util.shelve_util import get_current_path, set_current_path
 from pathlib import Path
+from command import  Command
 
 
 def is_js_file(file):
     file.endswith('.js') | file.endswith('.JS') | file.endswith('.Js') | file.endswith('.jS')
-
-
-class Command(object):
-    def check_argument(self, args):
-        pass
-
-    def execute(self, args):
-        pass
-
-    def usage(self):
-        pass
 
 
 class ToFolderCommand(Command):

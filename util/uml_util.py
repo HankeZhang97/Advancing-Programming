@@ -43,17 +43,18 @@ def draw_uml(path, js_name):
     # Method_list
     method_list = get_method_list(inner_str)
 
-    draw_uml_impl(class_name, field_list, constructor_content, method_list)
+    return draw_uml_impl(class_name, field_list, constructor_content, method_list)
 
 
 def draw_uml_impl(class_name, field_list, constructor_content, method_list):
-    print('------------------------------')
-    ex_print(class_name + ': class')
-    print('|----------------------------|')
+    result = '------------------------------\n'
+    result += ex_print(class_name + ': class')
+    result += '|----------------------------|\n'
     for field_item in field_list:
-        ex_print(field_item + ': object')
-    print('|----------------------------|')
-    ex_print(constructor_content)
+        result += ex_print(field_item + ': object')
+    result += '|----------------------------|\n'
+    result += ex_print(constructor_content)
     for method_item in method_list:
-        ex_print(method_item + ': void')
-    print('------------------------------')
+        result += ex_print(method_item + ': void')
+    result += '------------------------------\n'
+    return result

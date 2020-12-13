@@ -89,18 +89,21 @@ def get_method_list(inner_str):
 
 
 def ex_print(content):
+    result = ""
     str_len = len(content)
     if str_len <= 25:
-        print('| - ' + content, end='')
+        result += '| - ' + content
         for num in range(str_len, 25):
-            print(' ', end='')
-        print('|')
+            result += " "
+        result += '|' + "\n"
+        return result
     else:
-        print('| - ' + content[: 24], end=' |\n')
+        result += '| - ' + content[: 24] + ' |\n'
         p = int((str_len - 24) / 26)
         for num in range(0, p):
-            print('| ' + content[24 + num * 26: 24 + (num + 1) * 26] + ' |')
-        print('| ' + content[24 + p * 26: str_len], end='')
+            result += '| ' + content[24 + num * 26: 24 + (num + 1) * 26] + ' |\n'
+        result += '| ' + content[24 + p * 26: str_len]
         for num in range((str_len - 24) % 26, 27):
-            print(' ', end='')
-        print('|')
+            result += " "
+        result += "|\n"
+        return result
