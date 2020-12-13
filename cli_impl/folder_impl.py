@@ -2,7 +2,7 @@ import os
 
 from util.shelve_util import get_current_path, set_current_path
 from pathlib import Path
-from command import  Command
+from command import Command
 
 
 def is_js_file(file):
