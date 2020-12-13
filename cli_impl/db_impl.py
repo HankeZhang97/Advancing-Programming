@@ -1,4 +1,5 @@
 from util import sql_util, uml_util
+from command import Command
 
 
 def x_print(v_id, value):
@@ -12,26 +13,56 @@ def x_print(v_id, value):
         a = '| ' + str(v_id) + ' | '
     else:
         a = '|' + str(v_id) + '| '
-    print(a + value)
+    return a + value + "\n"
 
 
-def list_all_uml():
-    c_list = sql_util.select_all()
-    print('|  ID  | Class Name')
-    for item in c_list:
-        x_print(item['id'], item['value'])
+class ListAllUMLCommand(Command):
+    def check_argument(self, args):
+        if not len(args) == 0:
+            return False
+        return True
+
+    def execute(self, args):
+        result = "|  ID  | Class Name\n"
+        c_list = sql_util.select_all()
+        for item in c_list:
+            result += x_print(item['id'], item['value'])
+        return result
+
+    def usage(self):
+        return "List all uml command. Pass no argument."
 
 
-def show_uml(c_name):
-    entity = sql_util.select_one(c_name)
-    if not entity == {}:
-        uml_util.draw_uml_impl(
-            entity['class_name'],
-            entity['field_list'],
-            entity['constructor_content'],
-            entity['method_list'])
+class ShowUMLCommand(Command):
+    def check_argument(self, args):
+        if not len(args) == 1:
+            return False
+        return True
+
+    def execute(self, args):
+        c_name=args[0]
+        entity = sql_util.select_one(c_name)
+        if not entity == {}:
+            return uml_util.draw_uml_impl(
+                entity['class_name'],
+                entity['field_list'],
+                entity['constructor_content'],
+                entity['method_list']
+            )
+
+    def usage(self):
+        return "Show a UML of the given name. Pass the name as only argument."
 
 
-def delete_uml(c_name):
-    sql_util.delete(c_name)
-    list_all_uml()
+class DeleteUMLCommand(Command):
+    def check_argument(self, args):
+        if not len(args) == 1:
+            return False
+        return True
+
+    def execute(self, args):
+        c_name=args[0]
+        sql_util.delete(c_name)
+
+    def usage(self):
+        return "Show a UML of the given name. Pass the name as only argument."
