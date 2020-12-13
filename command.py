@@ -3,13 +3,13 @@ import time
 
 class Command(object):
     def check_argument(self, args):
-        pass
+        raise NotImplementedError()
 
     def execute(self, args):
-        pass
+        raise NotImplementedError()
 
     def usage(self):
-        pass
+        raise NotImplementedError()
 
 
 class CommandInvoker(object):

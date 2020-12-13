@@ -1,18 +1,18 @@
 from util import sql_util, uml_util
 from command import Command
+from collections import defaultdict
+import math
 
 
 def x_print(v_id, value):
-    if v_id >= 0 & v_id < 10:
-        a = '|  ' + str(v_id) + '   | '
-    elif v_id >= 10 & v_id < 100:
-        a = '|  ' + str(v_id) + '  | '
-    elif v_id >= 100 & v_id < 999:
-        a = '| ' + str(v_id) + '  | '
-    elif v_id >= 1000 & v_id < 9999:
-        a = '| ' + str(v_id) + ' | '
-    else:
-        a = '|' + str(v_id) + '| '
+    format_map = defaultdict(lambda: '|%s| ')
+    format_map.update({
+        0: '|  %s   | ',
+        1: '|  %s  | ',
+        2: '| %s  | ',
+        3: '| %s | ',
+    })
+    a = format_map[int(math.log(v_id))]
     return a + value + "\n"
 
 

@@ -11,30 +11,27 @@ def insert(class_name, field_list, constructor_content, method_list):
     conn = connect()
     cursor = conn.cursor()
     sql_1 = "INSERT INTO class_tb(class_name) VALUES('" + class_name + "');"
-    try:
-        cursor.execute(sql_1)
-        sql_2 = "select * from class_tb where class_name = '" + class_name + "';"
-        c = cursor.execute(sql_2)
-        c.row_factory = lambda cursor, row: row[0]
-        c_id = str(c.fetchone())
-        if len(field_list) > 0:
-            for field_item in field_list:
-                cursor.execute(
-                    "INSERT INTO field_tb(field_name, class_id) VALUES('" + field_item + "', " + c_id + ");"
-                )
-        if len(constructor_content) > 0:
+    cursor.execute(sql_1)
+    sql_2 = "select * from class_tb where class_name = '" + class_name + "';"
+    c = cursor.execute(sql_2)
+    c.row_factory = lambda cursor, row: row[0]
+    c_id = str(c.fetchone())
+    if len(field_list) > 0:
+        for field_item in field_list:
             cursor.execute(
-                "INSERT INTO constructor_tb(constructor_name, class_id) VALUES('" + constructor_content + "', " + c_id + ");"
+                "INSERT INTO field_tb(field_name, class_id) VALUES('" + field_item + "', " + c_id + ");"
             )
-        if len(method_list) > 0:
-            for method_item in method_list:
-                cursor.execute(
-                    "INSERT INTO method_tb(method_name, class_id) VALUES('" + method_item + "', " + c_id + ");"
-                )
-        conn.commit()
-        return True
-    except OSError:
-        return False
+    if len(constructor_content) > 0:
+        cursor.execute(
+            "INSERT INTO constructor_tb(constructor_name, class_id) VALUES('" + constructor_content + "', " + c_id + ");"
+        )
+    if len(method_list) > 0:
+        for method_item in method_list:
+            cursor.execute(
+                "INSERT INTO method_tb(method_name, class_id) VALUES('" + method_item + "', " + c_id + ");"
+            )
+    conn.commit()
+    return True
 
 
 def select_one(c_name):

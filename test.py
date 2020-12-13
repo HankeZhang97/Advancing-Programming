@@ -1,8 +1,7 @@
 import unittest
 import warnings
 
-from util import js_util
-from command import commandInvoker
+from command import commandInvoker, Command
 from doctest import testmod
 
 from util import js_util
@@ -105,11 +104,22 @@ class Test2(unittest.TestCase):
         r = self.commandInvoker.execute("show_uml")
         self.assertEqual(r, "Show a UML of the given name. Pass the name as only argument.")
 
+        r = self.commandInvoker.execute("show_uml none")
+        self.assertEqual(r, "No such entity")
+
         r = self.commandInvoker.execute("list_uml bad_argument")
         self.assertEqual(r, "List all uml command. Pass no argument.")
 
         r = self.commandInvoker.execute("delete_uml")
         self.assertEqual(r, "Delete a UML of the given name. Pass the name as only argument.")
+
+        command = Command()
+        with self.assertRaises(NotImplementedError):
+            command.execute([])
+        with self.assertRaises(NotImplementedError):
+            command.usage()
+        with self.assertRaises(NotImplementedError):
+            command.check_argument([])
 
     def test_normal_execute(self):
         r = self.commandInvoker.execute("current_folder")
@@ -247,6 +257,8 @@ boss.say()
 
         r = self.commandInvoker.execute("delete_uml Boss")
         self.assertEqual(r, "Delete Failed")
+
+        self.assertEqual(len(self.commandInvoker.history), 22)
 
 def test_get_class_name(c_path, c_name):
     """
