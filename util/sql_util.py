@@ -31,11 +31,10 @@ def insert(class_name, field_list, constructor_content, method_list):
                 cursor.execute(
                     "INSERT INTO method_tb(method_name, class_id) VALUES('" + method_item + "', " + c_id + ");"
                 )
-        print('Insert Successfully...')
-        print(c.fetchone())
+        conn.commit()
+        return True
     except OSError:
-        print('Insert defeated...')
-    conn.commit()
+        return False
 
 
 def select_one(c_name):
@@ -48,8 +47,8 @@ def select_one(c_name):
     c = cursor.execute("select * from class_tb where class_name = '" + c_name + "'")
     c.row_factory = lambda cursor, row: {'id': row[0], 'name': row[1]}
     cla = c.fetchone()
-    if cla == None:
-        print('The Class does not exist...')
+    if not cla:
+        return None
     else:
         entity['class_name'] = cla['name']
         c_id = str(cla['id'])
@@ -85,14 +84,15 @@ def delete(c_name):
     cursor = conn.cursor()
     cla_c = cursor.execute("select * from class_tb where class_name = '" + c_name + "'")
     cla_c.row_factory = lambda cursor, row: {'id': row[0], 'name': row[1]}
-    cla = cla_c.fetchone()
-    if not len(cla) > 0:
-        print('The Class does not exist...')
+    cla = cla_c.fetchall()
+    if not cla:
+        return False
     else:
-        c_id = str(cla['id'])
-        cursor.execute("delete from class_tb where id = " + c_id)
-        cursor.execute("delete from field_tb where class_id = " + c_id)
-        cursor.execute("delete from constructor_tb where class_id = " + c_id)
-        cursor.execute("delete from method_tb where class_id = " + c_id)
-        print('Delete Successfully...')
-    conn.commit()
+        for c in cla:
+            c_id = str(c['id'])
+            cursor.execute("delete from class_tb where id = " + c_id)
+            cursor.execute("delete from field_tb where class_id = " + c_id)
+            cursor.execute("delete from constructor_tb where class_id = " + c_id)
+            cursor.execute("delete from method_tb where class_id = " + c_id)
+            conn.commit()
+        return True

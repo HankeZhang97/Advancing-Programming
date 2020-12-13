@@ -34,7 +34,7 @@ class ShowJSUMLCommand(Command):
         return uml_util.draw_uml(get_current_path(), set_js_name(args[0]))
 
     def usage(self):
-        return "Show JS code command. Pass filename as the only argument"
+        return "Show JS UML command. Pass filename as the only argument"
 
 
 class SaveJSUMLCommand(Command):
@@ -44,8 +44,11 @@ class SaveJSUMLCommand(Command):
         return True
 
     def execute(self, args):
-        uml_util.save_uml(get_current_path(), set_js_name(args[0]))
-        return "The UML of '" + set_js_name(args[0]) + "' Save successfully..."
+        try:
+            uml_util.save_uml(get_current_path(), set_js_name(args[0]))
+            return "The UML of '" + set_js_name(args[0]) + "' Save successfully..."
+        except:
+            return "Save failed"
 
     def usage(self):
-        return "Save JS code command. Pass filename as the only argument"
+        return "Save JS UML command. Pass filename as the only argument"

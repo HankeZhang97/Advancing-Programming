@@ -42,13 +42,14 @@ class ShowUMLCommand(Command):
     def execute(self, args):
         c_name=args[0]
         entity = sql_util.select_one(c_name)
-        if not entity == {}:
+        if entity:
             return uml_util.draw_uml_impl(
                 entity['class_name'],
                 entity['field_list'],
                 entity['constructor_content'],
                 entity['method_list']
             )
+        return "No such entity"
 
     def usage(self):
         return "Show a UML of the given name. Pass the name as only argument."
@@ -61,8 +62,11 @@ class DeleteUMLCommand(Command):
         return True
 
     def execute(self, args):
-        c_name=args[0]
-        sql_util.delete(c_name)
+        c_name = args[0]
+        if sql_util.delete(c_name):
+            return "Delete Successfully"
+        else:
+            return "Delete Failed"
 
     def usage(self):
-        return "Show a UML of the given name. Pass the name as only argument."
+        return "Delete a UML of the given name. Pass the name as only argument."

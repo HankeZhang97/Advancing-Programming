@@ -6,12 +6,12 @@ from command import Command
 
 
 def is_js_file(file):
-    file.endswith('.js') | file.endswith('.JS') | file.endswith('.Js') | file.endswith('.jS')
+    return file.endswith('.js') | file.endswith('.JS') | file.endswith('.Js') | file.endswith('.jS')
 
 
 class ToFolderCommand(Command):
     def check_argument(self, args):
-        if len(args) != 1 or type(args[0]) != str or not args[0]:
+        if len(args) != 1:
             return False
         return True
 
@@ -21,7 +21,7 @@ class ToFolderCommand(Command):
         if my_dir.is_dir():
             if not url[-1:] == '\\':
                 url += '\\'
-            return 'Successfully...\nCurrent path: ' + set_current_path(url)
+            return 'Current path: ' + set_current_path(url)
         else:
             return 'The Folder does not exist...'
 
@@ -36,14 +36,11 @@ class ToDefaultFolderCommand(Command):
         return True
 
     def execute(self, args):
-        try:
-            default_path = os.path.dirname(os.path.dirname(__file__)) + '\\resource\\'
-            return 'Successfully...' + 'Current path: ' + set_current_path(default_path)
-        except:
-            return 'The Folder does not exist...'
+        default_path = os.path.dirname(os.path.dirname(__file__)) + '\\resource\\'
+        return 'Current path: ' + set_current_path(default_path)
 
     def usage(self):
-        return "Change to folder command. Use folder as the only argument"
+        return "Change to folder command. Use no argument"
 
 
 class ShowCurrentFolderCommand(Command):

@@ -23,7 +23,7 @@ def save_uml(path, js_name):
     # Method_list
     method_list = get_method_list(inner_str)
 
-    insert(class_name, field_list, constructor_content, method_list)
+    return insert(class_name, field_list, constructor_content, method_list)
 
 
 def draw_uml(path, js_name):
