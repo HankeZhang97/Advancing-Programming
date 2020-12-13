@@ -38,14 +38,20 @@ from cli_impl.folder_impl import ShowAllFilesCommand, ShowAllJSFilesCommand, Sho
     ToDefaultFolderCommand, ToFolderCommand
 
 commandInvoker = CommandInvoker()
-commandInvoker.register("", ShowCurrentFolderCommand())
-commandInvoker.register("", ShowAllJSFilesCommand())
-commandInvoker.register("", ShowAllFilesCommand())
-commandInvoker.register("", ToDefaultFolderCommand())
-commandInvoker.register("", ToFolderCommand())
+commandInvoker.register("current_folder", ShowCurrentFolderCommand())
+commandInvoker.register("list_js_files", ShowAllJSFilesCommand())
+commandInvoker.register("list_files", ShowAllFilesCommand())
+commandInvoker.register("to_default", ToDefaultFolderCommand())
+commandInvoker.register("to_folder", ToFolderCommand())
 
 from cli_impl.js_impl import SaveJSUMLCommand, ShowJSCodeCommand, ShowJSUMLCommand
 
-commandInvoker.register("", SaveJSUMLCommand())
-commandInvoker.register("", ShowJSUMLCommand())
-commandInvoker.register("", ShowJSCodeCommand())
+commandInvoker.register("save_js_uml", SaveJSUMLCommand())
+commandInvoker.register("show_js_uml", ShowJSUMLCommand())
+commandInvoker.register("show_js_code", ShowJSCodeCommand())
+
+from cli_impl.db_impl import ShowUMLCommand, ListAllUMLCommand, DeleteUMLCommand
+
+commandInvoker.register("show_uml", ShowUMLCommand())
+commandInvoker.register("list_uml", ListAllUMLCommand())
+commandInvoker.register("delete_uml", DeleteUMLCommand())
